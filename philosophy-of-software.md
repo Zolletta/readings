@@ -2,7 +2,7 @@
 
 ## by John Ousterhout, published by Standford University
 
-> Please note: I won't publish a direct link to the page details here since I cound'nt find the publisher's page. Just google the title to find out where to buy the book (highly advised :)
+*Please note: I won't publish a direct link to the page details here since I cound'nt find the publisher's page. Just google the title to find out where to buy the book (highly advised :)*
 
 John Ousterhout, as [his Wikipedia page](https://en.wikipedia.org/wiki/John_Ousterhout) states is a professor of Computer Science at Stanford University. He also invented [TCL](https://en.wikipedia.org/wiki/Tcl) in 1988.
 
@@ -60,9 +60,10 @@ With this perspective, shallow modules are the ones that expose quite long inter
 Side note: This is somehow original because we are always taught that small modules are good and one of the refactoring goals is to split long class into several smaller ones.
 This approach, however, may lead to cognitive load: since every module does not contribute so much in itself we will need a lot of them, each with its own interface to digest.
 
-The author is, instead, not against long methods. They are fine if they have a simple signature and are easy to read. “Methods, in other words, should do one thing and do it completely.”
+The author is, instead, not against long methods. They are fine if they have a simple signature and are easy to read.
+>Methods, in other words, should do one thing and do it completely.
 
-“The decision to split or join modules should be based on complexity. Pick the structure that results in the best information hiding, the fewest dependencies and the deepest interfaces”.
+>The decision to split or join modules should be based on complexity. Pick the structure that results in the best information hiding, the fewest dependencies and the deepest interfaces.
 
 ## On information hiding and leaking
 
@@ -76,7 +77,8 @@ Our job as developers is to minimize the information that needs to be let outsid
 ## On interfaces
 
 The book goes on suggesting several techniques to reduce complexity.
-One interesting advice is to create a specific module for the given task but with a generic interface. As the author says, “the interface should be general enough to support multiple uses: the interface should be easy to use for today’s needs without being tied specifically to them”.
+One interesting advice is to create a specific module for the given task but with a generic interface. As the author says,
+>the interface should be general enough to support multiple uses: the interface should be easy to use for today’s needs without being tied specifically to them.
 
 ## On software layers
 
@@ -92,14 +94,15 @@ Personal note: I would, however, stick to this (that is, I wouldn’t save the c
 ## On Exceptions
 
 Exceptions add complexity because we should decide whether to handle them and where (at the low level or at the outer most?) because writing the handling methods could lead to other exceptions and also because it is difficult to test if such code really works.
-One approach is to “**define errors out of existence**”.
+One approach is to **define errors out of existence**.
 For example, instead of throwing an error in case we are trying to unset an unknown variable, we can simply do nothing, in that case.
 In the same way, we can make special cases out of existence. The author gives this example: think about a text editor and the text selection mechanism. Instead of cluttering all the code of if statements testing if a selection is available we can make the selection always present by having it at length 0 when the user did not select anything.
 In this way, we can let exceptions handle only exceptional things!
 
 ## On comments
 
-“Without comments, you can’t hide complexity. … Comments, if done correctly, will actually improve a system’s design”. “If a user must read the code of a method in order to use it, then there is no abstraction”.
+>Without comments, you can’t hide complexity. … Comments, if done correctly, will actually improve a system’s design. If a user must read the code of a method in order to use it, then there is no abstraction.
+
 Ideally, developers should read only the interfaces. To help them, comments are needed to describe what’s not obvious. Typically, comments will add information at a lower level of the code (adding precision) or at a higher level (adding intuition). Comments at the same level of the code are likely to repeat the code itself and thus be unuseful.
 Try to make it easy to find documentation (put comments near the code they describe) but do not repeat comments; instead reference it, if needed.
 
@@ -111,15 +114,17 @@ If a system is not consistent, two situations may seem the same when actually th
 ## On obviousness
 
 A code is obvious only if the current reader is able to read it and comprehend it. You should provide all the needed information to correctly digest your code. You can do this in three ways:
-reducing the information needed, eliminating special cases and leveraging abstraction
-taking advantage of consistency, you can meet your readers’ expectations
-presenting important information right in the code with techniques such as giving good names to methods and variables and in-line comments.
+
+- reducing the information needed, eliminating special cases and leveraging abstraction
+- taking advantage of consistency, you can meet your readers’ expectations
+- presenting important information right in the code with techniques such as giving good names to methods and variables and in-line comments.
 
 ## On Agile
 
 Agile development focuses on features, and once is done, moves to the next. Agile development, in fact, dictates that development should be done incrementally.
-Ousterhout suggests that “the increments of development should be abstraction, not features”.
+Ousterhout suggests that
+>the increments of development should be abstraction, not features.
 
 ## On test-driven development
 
-“TDD focus attention on getting specific features working, rather than finding the best design: it’s tactical programming pure and simple. … At any given point, it’s tempting to just hack in the next feature to make the next test pass”.
+> TDD focus attention on getting specific features working, rather than finding the best design: it’s tactical programming pure and simple. … At any given point, it’s tempting to just hack in the next feature to make the next test pass.
