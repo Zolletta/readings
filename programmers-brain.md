@@ -42,7 +42,9 @@ One trick to try to overcome this forgetfulness is repetition, but not at regula
 
 One key to counter the forgetting curve is the **elaboration**.
 
-This article you are reading is an elaboration, which means, by the words of the author,   “thinking what you want to remember, relating it to existing memories, and making the memories fit into schemata already stored into your LTM” (p. 44). An elaboration is a way to restructure your understanding and to sculpt it into a long term network of memories.
+This article you are reading is an elaboration, which means, by the words of the author,   
+>thinking what you want to remember, relating it to existing memories, and making the memories fit into schemata already stored into your LTM (p. 44). 
+An elaboration is a way to restructure your understanding and to sculpt it into a long term network of memories.
 
 ## Cognitive load
 
@@ -56,7 +58,9 @@ We should train ourselves to distinguish these three types of cognitive loads be
 
 ## Mental models in a developer’s world
 
-Mental models can help you solve problems and help you ease your cognitive load. They are like “an abstraction [of the world] that help you reason about the problem at hand” (p. 95)
+Mental models can help you solve problems and help you ease your cognitive load. They are like
+>an abstraction [of the world] that help you reason about the problem at hand (p. 95)
+
 Mental models are by nature incomplete and can change over the course of time. Besides, several mental models (regarding related issues) can coexist, each with its local coherence, even if - taken as a whole, it would appear as totally incoherent.
 Finally, we should remember that sometimes we could fall back to old, falsy mental models, because once new ones are established the older are not  simply wiped out, but kept in our mental storage (long term storage) until oblivion or recall.
 
@@ -65,7 +69,8 @@ Double check the metaphors you will be using, though. They might create confusio
 
 ## How to onboard new developers
 
-“One of the reasons more-senior people often struggle with effectively teaching and explaining is the “curse of expertise”. Once you have mastered a certain skill sufficiently, you will inevitably forget how hard it was to learn that skill or knowledge. You will, therefore, overestimate how many new things a newcomer can process at the same time.” (p. 206).
+>One of the reasons more-senior people often struggle with effectively teaching and explaining is the "curse of expertise”. Once you have mastered a certain skill sufficiently, you will inevitably forget how hard it was to learn that skill or knowledge. You will, therefore, overestimate how many new things a newcomer can process at the same time. (p. 206).
+
 Experts are not the same as junior developers, only faster. Instead, their gained experience made their long term memory different from junior developers and so their approach to problem solving is a lot different from them.
 
 There are three kind of confusions at play when dealing with all the cognitive activities related to software development:
@@ -79,7 +84,10 @@ This is particularly true for new hires, and that’s why it would be a very goo
 Besides that, what’s most certainly true is that new hires are asked to do too much at the same time. The simple tasks they are assigned will probably deal with all but exploration phases all the same time learning other important stuff like the company organization, the team way of working, and so on.
 
 In order to ease the life of the new hires (and, If I may add, to better evaluate their specific skills) the author suggests preparing specific smaller tasks - each one that can be built on top of the previous - that focus only on one aspect of the programming, as defined in the cognitive dimension of notation framework.
-And remember: “**understanding is a better welcome task than building.**” (p. 216)
+
+And remember:
+
+>understanding is a better welcome task than building. (p. 216)
 
 ## Automatization
 
@@ -89,4 +97,5 @@ In our long term memory resides two kind of memories:
 - the **declarative (explicit) memory** concerns episodic memories, things that happened in the past.
 
 Researchers demonstrated that experts rely heavily on episodic memory when trying to solve problems: in a sense, they recreate familiar settings and apply the same reasoning that worked that time.
-But what about a solution in which we depended a great part on the procedural memory instead? One of the great aspects of the book is that is it full of exercises to help improve our cognitive fitness. In this case the author call it **automatization**: “this automatic performance of the task is quick and effortless because retrieval from memory i s faster than actively thinking of the task at hand can be done with little or no conscious attention.” (p. 170).
+But what about a solution in which we depended a great part on the procedural memory instead? One of the great aspects of the book is that is it full of exercises to help improve our cognitive fitness. In this case the author call it **automatization**:
+>this automatic performance of the task is quick and effortless because retrieval from memory i s faster than actively thinking of the task at hand can be done with little or no conscious attention. (p. 170).
