@@ -1,6 +1,6 @@
 name: publish-to-medium
 run-name: ${{ github.actor }} is publishing an article to Medium
-on: public
+on: workflow_dispatch
 jobs:
   publish-to-medium:
     runs-on: ubuntu-latest
