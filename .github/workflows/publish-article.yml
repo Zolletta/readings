@@ -1,4 +1,4 @@
-name: 'Publish article if in git body message there is a string containing publish new article <articlefilename>'
+name: 'Publish an article'
 run-name: ${{ github.actor }} is publishing an article
 on:
   workflow_dispatch:
