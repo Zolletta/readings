@@ -7,6 +7,10 @@ jobs:
   publish-to-medium:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
       - name: Find article to publish
         run: |
           MERGE_LOG=`git show --format=%b`
