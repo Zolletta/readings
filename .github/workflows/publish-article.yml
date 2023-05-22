@@ -43,6 +43,6 @@ jobs:
           POST_URL=/v1/users/${{ env.MEDIUM_USER_ID }}/posts
           echo curl -d $JSON -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
 
-        with:
+        env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
