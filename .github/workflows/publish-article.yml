@@ -29,10 +29,12 @@ jobs:
               done
           fi
           
-          ARTICLE_NAME=programmers-brain.md
+          TEST=programmers-brain.md
 
       - name: Publish to Medium
         run: |
+          echo $ARTICLE_NAME
+          echo $TEST
           UNTRIMMED_TITLE=`head -1 $ARTICLE_NAME`
           TITLE="${UNTRIMMED_TITLE:1}"
           MARKDOWN=`cat $ARTICLE_NAME`
