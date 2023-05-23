@@ -6,6 +6,10 @@ on:
       article_name:
         description: 'Article to publish'
         required: true
+      publish_medium:
+        description: 'Publish to Medium?'
+        required: true
+        default: false
 jobs:
   publish-to-medium:
     runs-on: ubuntu-latest
@@ -14,7 +18,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Publish to Medium
+      - if: github.event.inputs.publish_medium == 'true'
+        name: Publish to Medium
         run: |
           ARTICLE_NAME=${{ github.event.inputs.article_name }}
           UNTRIMMED_TITLE=`head -1 $ARTICLE_NAME`
@@ -31,7 +36,7 @@ jobs:
           }"
 
           POST_URL=/v1/users/${{ env.MEDIUM_USER_ID }}/posts
-          echo curl -d $JSON -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
+          curl -d $JSON -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
