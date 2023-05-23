@@ -27,8 +27,8 @@ jobs:
       - name: Checkout Repo
         uses: lifepal/markdown-to-html@v1.1
         with:
-          HTML_TITLE: ${{ TITLE }}
-          HTML_CONTENTS: ${{ MARKDOWN }}
+          HTML_TITLE: "test"
+          HTML_CONTENTS: "tost"
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
