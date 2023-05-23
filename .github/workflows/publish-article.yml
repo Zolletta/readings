@@ -21,10 +21,8 @@ jobs:
       - name: Extract markdown
         run: |
           ARTICLE_NAME=${{ github.event.inputs.article_name }}
-          TITLE=`head -1 $ARTICLE_NAME`
-          MARKDOWN=`cat $ARTICLE_NAME automated.md`
-          echo "TITLE=${TITLE}" >> $GITHUB_ENV
-          echo "MARKDOWN=${MARKDOWN}" >> $GITHUB_ENV
+          echo TITLE=`head -1 $ARTICLE_NAME` >> $GITHUB_ENV
+          echo MARKDOWN=`cat $ARTICLE_NAME automated.md` >> $GITHUB_ENV
 
       - name: Converting article markdown to HTML
         uses: lifepal/markdown-to-html@v1.1
