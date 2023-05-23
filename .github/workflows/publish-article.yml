@@ -36,7 +36,9 @@ jobs:
           }"
 
           POST_URL=/v1/users/${{ env.MEDIUM_USER_ID }}/posts
-          curl -d $JSON -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
+          echo $MEDIUM_SECRET
+          echo $POST_URL
+          curl -d ${JSON} -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
