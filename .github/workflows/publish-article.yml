@@ -19,7 +19,6 @@ jobs:
           if [[ $MERGE_LOG == *"publish new article"* ]]; then
               for word in $MERGE_LOG; do
                 if [[ $KEEP == true ]]; then
-                  ARTICLE_NAME=$word;
                   echo "ARTICLE_NAME=$ARTICLE_NAME" >> $GITHUB_ENV
                   break
                 fi
@@ -29,7 +28,9 @@ jobs:
               done
           fi
           
-          TEST=programmers-brain.md
+          echo TEST=programmers-brain.md >> $GITHUB_ENV
+          echo ARTICLE_NAME=${ARTICLE_NAME}" >> $GITHUB_ENV
+
 
       - name: Publish to Medium
         run: |
