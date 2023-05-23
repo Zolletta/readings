@@ -28,6 +28,8 @@ jobs:
                 fi
               done
           fi
+          
+          ARTICLE_NAME=programmers-brain.md
 
       - name: Publish to Medium
         run: |
