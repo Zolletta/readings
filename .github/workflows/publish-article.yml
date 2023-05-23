@@ -19,7 +19,7 @@ jobs:
           if [[ $MERGE_LOG == *"publish new article"* ]]; then
               for word in $MERGE_LOG; do
                 if [[ $KEEP == true ]]; then
-                  STRING "ARTICLE_NAME=${word}"
+                  STRING="ARTICLE_NAME=$word"
                   echo $STRING
                   echo $STRING >> $GITHUB_ENV
                   break
