@@ -23,12 +23,13 @@ jobs:
           ARTICLE_NAME=${{ github.event.inputs.article_name }}
           TITLE=`head -1 $ARTICLE_NAME`
           MARKDOWN=`cat $ARTICLE_NAME automated.md`
+          echo $TITLE >> $GITHUB_ENV
+          echo $MARKDOWN >> $GITHUB_ENV
 
-      - name: Checkout Repo
+      - name: Converting article markdown to HTML
         uses: lifepal/markdown-to-html@v1.1
         with:
-          HTML_TITLE: "test"
-          HTML_CONTENTS: "tost"
+          text: ${{ env.MEDIUM_USER_ID }}
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
