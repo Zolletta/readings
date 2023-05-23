@@ -35,10 +35,8 @@ jobs:
             \"notifyFollowers\": true
           }"
 
-          POST_URL=/v1/users/${{ env.MEDIUM_USER_ID }}/posts
-          echo $MEDIUM_SECRET
-          echo $POST_URL
-          curl -d ${JSON} -H "Content-Type: application/json" -H "Authorization: Bearer ${{ env.MEDIUM_SECRET }}" -X POST $POST_URL
+          POST_URL=https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts
+          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL -vvv
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
