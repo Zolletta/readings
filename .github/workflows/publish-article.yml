@@ -16,8 +16,8 @@ jobs:
 
       - name: Publish to Medium
         run: |
-          echo github.event.inputs.article_name
-          ARTICLE_NAME=github.event.inputs.article_name
+          echo ${{ github.event.inputs.flutter_version }}
+          ARTICLE_NAME=${{ github.event.inputs.flutter_version }}
           UNTRIMMED_TITLE=`head -1 $ARTICLE_NAME`
           TITLE="${UNTRIMMED_TITLE:1}"
           MARKDOWN=`cat $ARTICLE_NAME`
