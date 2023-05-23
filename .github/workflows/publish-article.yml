@@ -31,7 +31,8 @@ jobs:
           HTML_CONTENTS: ${{ MARKDOWN }}
 
       - if: github.event.inputs.publish_medium == 'true'
-        name: Publish to Medium 
+        name: Publish to Medium
+        run: |
           JSON="{
             \"title\": \"${HTML_TITLE}\",
             \"content\": \"${HTML_CONTENTS}\",
