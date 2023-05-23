@@ -16,7 +16,8 @@ jobs:
 
       - name: Publish to Medium
         run: |
-          echo $ARTICLE_NAME
+          echo github.event.inputs.article_name
+          ARTICLE_NAME=github.event.inputs.article_name
           UNTRIMMED_TITLE=`head -1 $ARTICLE_NAME`
           TITLE="${UNTRIMMED_TITLE:1}"
           MARKDOWN=`cat $ARTICLE_NAME`
@@ -36,5 +37,3 @@ jobs:
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
-        with:
-          ARTICLE_NAME: '${{ github.event.inputs.article_name }}'
