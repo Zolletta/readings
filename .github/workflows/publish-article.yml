@@ -18,19 +18,24 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - if: github.event.inputs.publish_medium == 'true'
-        name: Publish to Medium
+      - name: Extract markdown
         run: |
           ARTICLE_NAME=${{ github.event.inputs.article_name }}
-          UNTRIMMED_TITLE=`head -1 $ARTICLE_NAME`
-          TITLE="${UNTRIMMED_TITLE:1}"
+          TITLE=`head -1 $ARTICLE_NAME`
           MARKDOWN=`cat $ARTICLE_NAME automated.md`
 
+      - name: Checkout Repo
+        uses: lifepal/markdown-to-html@v1.1
+        with:
+          HTML_TITLE: ${{ TITLE }}
+          HTML_CONTENTS: ${{ MARKDOWN }}
+
+      - if: github.event.inputs.publish_medium == 'true'
+        name: Publish to Medium 
           JSON="{
-            \"title\": \"${TITLE}\",
-            \"content\": \"${MARKDOWN}\",
+            \"title\": \"${HTML_TITLE}\",
+            \"content\": \"${HTML_CONTENTS}\",
             \"canonicalUrl\": \"https://github.com/zolletta/readings/${ARTICLE_NAME}\",
-            \"contentFormat\": \"markdown\",
             \"publishStatus\": \"public\",
             \"notifyFollowers\": true
           }"
