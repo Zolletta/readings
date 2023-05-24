@@ -14,7 +14,7 @@ on:
 
 jobs:
 
-  publishing-a-new-article:
+  publish-a-new-article:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +34,7 @@ jobs:
           echo MARKDOWN_TITLE=${MARKDOWN_TITLE} >> $GITHUB_ENV
           echo MARKDOWN_CONTENTS=${MARKDOWN_CONTENTS} > $GITHUB_ENV
 
-      - uses: r-lib/actions/setup-pandoc@v2
-        name: Convert to HTML
+      - name: Convert to HTML
         run: |
             HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
             HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
