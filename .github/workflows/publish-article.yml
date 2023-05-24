@@ -36,15 +36,17 @@ jobs:
           HTML_CONTENTS=`head -1 ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
           
           echo "#### $HTML_TITLE" >> $GITHUB_STEP_SUMMARY
-          echo "$HTML_CONTENTS" >> $GITHUB_STEP_SUMMARY
                     
           JSON="{
-            \"title\": \"$HTML_TITLE\",
-            \"content\": \"$HTML_CONTENTS\",
+            \"title\": \"${HTML_TITLE}\",
+            \"content\": \"${HTML_CONTENTS}\",
             \"canonicalUrl\": \"https://github.com/zolletta/readings/${{ github.event.inputs.article_name }}\",
             \"publishStatus\": \"public\",
             \"notifyFollowers\": false
           }"
+          
+                    echo $JSON >> $GITHUB_STEP_SUMMARY
+
 
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL 
