@@ -35,7 +35,7 @@ jobs:
         id: convert
         name: Converting article markdown to HTML
         with:
-          args: --input=/home/runner/work/readings/readings/output/article.md --output=/home/runner/work/readings/readings/output/article.html
+          args: /home/runner/work/readings/readings/output/article.md --output=/home/runner/work/readings/readings/output/article.html
 
       #- uses: actions/upload-artifact@v3
       #  name: Uploading HTML artifacts
