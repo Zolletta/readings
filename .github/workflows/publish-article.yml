@@ -31,13 +31,13 @@ jobs:
         name: Publish to Medium
         run: |
           echo "## Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
-
-          # HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t html`
-          # HTML_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
           
-          HTML_TITLE=`head -1 automated.md | pandoc -t html`
-          HTML_CONTENTS=`head -1 automated.md | pandoc -t html`
+          HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t html`
+          HTML_CONTENTS=`head -1 ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
           
+          echo "#### $HTML_TITLE" >> $GITHUB_STEP_SUMMARY
+          echo "$HTML_CONTENTS" >> $GITHUB_STEP_SUMMARY
+                    
           JSON="{
             \"title\": \"$HTML_TITLE\",
             \"content\": \"$HTML_CONTENTS\",
