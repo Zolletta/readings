@@ -30,7 +30,7 @@ jobs:
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
-          echo '## Published to Medium: ✓  >> $GITHUB_STEP_SUMMARY
+          echo "## Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
 
           # HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t html`
           # HTML_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
