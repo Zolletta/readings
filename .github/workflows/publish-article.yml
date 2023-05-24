@@ -20,15 +20,17 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Prepare markdown
+        id: prepare_markdown
         run: |
-          echo ARTICLE_NAME=${{ github.event.inputs.article_name }}  >> $GITHUB_ENV
-          mkdir pandoc  
-          cat $ARTICLE_NAME automated.md > pandoc/article.md
+          echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
+          mkdir output
+          MARKDOWN=`cat $ARTICLE_NAME automated.md`
+          echo "markdown=${MARKDOWN}" > $GITHUB_OUTPUT
 
       - uses: docker://pandoc/core:2.9
         name: Converting article markdown to HTML
         with:
-          args: --output=pandoc/article.html pandoc/article.md
+          args: --output=pandoc/article.html ${{ steps.prepare_markdown.outputs.markdown }}
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
@@ -37,17 +39,19 @@ jobs:
           HTML_TITLE=`head -1 pandoc/article.html`
           HTML_CONTENTS=`cat pandoc/article.html`
           
+          echo "The article to be published on Medium is: $ARTICLE_NAME"
+          echo "The article title is: $HTML_TITLE"
 
           JSON="{
             \"title\": \"title\",
-            \"content\": \"contents\",
+            \"content\": \"<p>Cache invalidation</p><p>Naming things</p>\",
             \"canonicalUrl\": \"https://github.com/zolletta/readings/${ARTICLE_NAME}\",
             \"publishStatus\": \"public\",
-            \"notifyFollowers\": true
+            \"notifyFollowers\": false
           }"
 
           POST_URL=https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts
-          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL -v 
+          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL 
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
