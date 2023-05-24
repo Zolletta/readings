@@ -23,21 +23,22 @@ jobs:
         id: prepare_markdown
         run: |
           echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          mkdir /tmp/output
-          cat $ARTICLE_NAME automated.md > /tmp/output/article.md
-          echo "markdown=/tmp/output/article.md" > $GITHUB_OUTPUT
+          mkdir output
+          cat $ARTICLE_NAME automated.md > output/article.md
+          chmod -R 777 output 
+          echo "markdown=output/article.md" > $GITHUB_OUTPUT
 
       - uses: docker://pandoc/core:2.9
         name: Converting article markdown to HTML
         with:
-          args: ${{ steps.prepare_markdown.outputs.markdown }} --output=/tmp/output/article.html
+          args: ${{ steps.prepare_markdown.outputs.markdown }} --output=output/article.html
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
           
-          HTML_TITLE=`head -1 /tmp/output/article.html`
-          HTML_CONTENTS=`cat /tmp/output/article.html`
+          HTML_TITLE=`head -1 output/article.html`
+          HTML_CONTENTS=`cat output/article.html`
           
           echo "The article to be published on Medium is: $ARTICLE_NAME"
           echo "The article title is: $HTML_TITLE"
