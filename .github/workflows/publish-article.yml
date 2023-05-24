@@ -22,6 +22,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - name: Setup Pandoc
+        uses: nikeee/setup-pandoc@v1
+        with:
+          pandoc-version: '2.9'
+
       - name: Prepare markdown
         run: |
           MARKDOWN_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md`
@@ -33,23 +38,15 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
         name: Convert to HTML
-        with:
-          pandoc-version: '2.9'
-          run: |
-              HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
-              HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
-              echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
-              echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
+        run: |
+            HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
+            HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
+            echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
+            echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
 
       #- uses: docker://pandoc/core:2.9
       #  with:
       #    args: ${{ steps.prepare_markdown.outputs.markdown }} --output=/home/runner/work/readings/readings/output/article.html
-
-      #- uses: actions/upload-artifact@v3
-      #  name: Uploading HTML artifacts
-      #  with:
-      #    name: output
-      #    path: output
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
