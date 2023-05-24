@@ -24,13 +24,12 @@ jobs:
 
       - name: Prepare markdown
         run: |
-          echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          MARKDOWN_CONTENTS=`cat ${github.event.inputs.article_name} automated.md`
-          MARKDOWN_TITLE=`head -1 ${github.event.inputs.article_name}`
+          MARKDOWN_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md`
+          MARKDOWN_TITLE=`head -1 ${{ github.event.inputs.article_name }}`
           echo MARKDOWN_TITLE=${MARKDOWN_TITLE} >> $GITHUB_ENV
           echo MARKDOWN_CONTENTS=${MARKDOWN_CONTENTS} > $GITHUB_ENV
           echo $MARKDOWN_TITLE
-          echo $github.event.inputs.article_name
+          echo ${{ github.event.inputs.article_name }}
 
       - uses: r-lib/actions/setup-pandoc@v2
         name: Convert to HTML
@@ -56,13 +55,13 @@ jobs:
         name: Publish to Medium
         run: |
           
-          echo "The article to be published on Medium is: $ARTICLE_NAME"
+          echo "The article to be published on Medium is: ${{ github.event.inputs.article_name }}"
           echo "The article title is: $HTML_TITLE"
 
           JSON="{
             \"title\": \"$HTML_TITLE\",
             \"content\": \"$HTML_CONTENTS\",
-            \"canonicalUrl\": \"https://github.com/zolletta/readings/${ARTICLE_NAME}\",
+            \"canonicalUrl\": \"https://github.com/zolletta/readings/${{ github.event.inputs.article_name }}\",
             \"publishStatus\": \"public\",
             \"notifyFollowers\": false
           }"
