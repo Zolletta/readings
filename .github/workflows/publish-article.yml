@@ -44,8 +44,11 @@ jobs:
         run: |
           echo '## Published to Medium: YES!  >> $GITHUB_STEP_SUMMARY
 
-          HTML_TITLE=`echo ${MARKDOWN_TITLE} | pandoc -t html`
-          HTML_CONTENTS=`echo ${MARKDOWN_CONTENTS} | pandoc -t html`
+          HTML_TITLE=`echo ${ MARKDOWN_TITLE } | pandoc -t html`
+          HTML_CONTENTS=`echo ${ HTML_CONTENTS } | pandoc -t html`
+          
+          echo $HTM_TITLE
+          echo MARKDOWN_TITLE
           
           JSON="{
             \"title\": \"$HTML_TITLE\",
