@@ -25,14 +25,10 @@ jobs:
       - name: Prepare markdown
         run: |
           echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          # mkdir /home/runner/work/readings/readings/output
-          # cat $ARTICLE_NAME automated.md > /home/runner/work/readings/readings/output/article.md
           MARKDOWN_CONTENTS=`cat ${ARTICLE_NAME} automated.md`
           MARKDOWN_TITLE=`head -1 ${ARTICLE_NAME}`
-
-          # chmod -R 777 /home/runner/work/readings/readings/output 
-          echo "MARKDOWN_TITLE=$MARKDOWN_TITLE" > $GITHUB_ENV
-          echo "MARKDOWN_CONTENTS=$MARKDOWN_CONTENTS" > $GITHUB_ENV
+          echo ARTICLE_NAME=${MARKDOWN_TITLE} >> $GITHUB_ENV
+          echo "MARKDOWN_CONTENTS=${MARKDOWN_CONTENTS}" > $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
         name: Convert to HTML
