@@ -12,7 +12,7 @@ on:
         default: "false"
 
 jobs:
-  publish-to-medium:
+  publishing-a-new-article:
     runs-on: ubuntu-latest
     steps:
 
@@ -36,10 +36,11 @@ jobs:
           
           HTML_TITLE=`head -1 pandoc/article.html`
           HTML_CONTENTS=`cat pandoc/article.html`
+          
 
           JSON="{
-            \"title\": \"${HTML_TITLE}\",
-            \"content\": \"${HTML_CONTENTS}\",
+            \"title\": \"title\",
+            \"content\": \"contents\",
             \"canonicalUrl\": \"https://github.com/zolletta/readings/${ARTICLE_NAME}\",
             \"publishStatus\": \"public\",
             \"notifyFollowers\": true
