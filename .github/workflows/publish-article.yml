@@ -23,19 +23,30 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Prepare markdown
-        id: prepare_markdown
         run: |
           echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          mkdir /home/runner/work/readings/readings/output
-          cat $ARTICLE_NAME automated.md > /home/runner/work/readings/readings/output/article.md
-          chmod -R 777 /home/runner/work/readings/readings/output 
-          echo "markdown=output/article.md" > $GITHUB_OUTPUT
+          # mkdir /home/runner/work/readings/readings/output
+          # cat $ARTICLE_NAME automated.md > /home/runner/work/readings/readings/output/article.md
+          MARKDOWN_CONTENTS=`cat ${ARTICLE_NAME} automated.md`
+          MARKDOWN_TITLE=`head -1 ${ARTICLE_NAME}`
 
-      - uses: docker://pandoc/core:2.9
-        id: convert
-        name: Converting article markdown to HTML
+          # chmod -R 777 /home/runner/work/readings/readings/output 
+          echo "MARKDOWN_TITLE=$MARKDOWN_TITLE" > $GITHUB_ENV
+          echo "MARKDOWN_CONTENTS=$MARKDOWN_CONTENTS" > $GITHUB_ENV
+
+      - uses: r-lib/actions/setup-pandoc@v2
+        name: Convert to HTML
         with:
-          args: /home/runner/work/readings/readings/output/article.md --output=/home/runner/work/readings/readings/output/article.html
+          pandoc-version: '2.9'
+          run: |
+            HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
+            HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
+            echo "HTML_TITLE=$HTML_TITLE" > $GITHUB_ENV
+            echo "HTML_CONTENTS=$HTML_CONTENTS" > $GITHUB_ENV
+
+      #- uses: docker://pandoc/core:2.9
+      #  with:
+      #    args: ${{ steps.prepare_markdown.outputs.markdown }} --output=/home/runner/work/readings/readings/output/article.html
 
       #- uses: actions/upload-artifact@v3
       #  name: Uploading HTML artifacts
@@ -47,15 +58,12 @@ jobs:
         name: Publish to Medium
         run: |
           
-          HTML_TITLE=`head -1 /home/runner/work/readings/readings/output/article.html`
-          HTML_CONTENTS=`cat /home/runner/work/readings/readings/output/article.html`
-          
           echo "The article to be published on Medium is: $ARTICLE_NAME"
           echo "The article title is: $HTML_TITLE"
 
           JSON="{
-            \"title\": \"title\",
-            \"content\": \"<p>Cache invalidation</p><p>Naming things</p>\",
+            \"title\": \"$HTML_TITLE\",
+            \"content\": \"$HTML_CONTENTS\",
             \"canonicalUrl\": \"https://github.com/zolletta/readings/${ARTICLE_NAME}\",
             \"publishStatus\": \"public\",
             \"notifyFollowers\": false
