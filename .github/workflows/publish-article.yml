@@ -44,11 +44,11 @@ jobs:
         run: |
           echo '## Published to Medium: YES!  >> $GITHUB_STEP_SUMMARY
 
-          HTML_TITLE=`echo ${ MARKDOWN_TITLE } | pandoc -t html`
-          HTML_CONTENTS=`echo ${ HTML_CONTENTS } | pandoc -t html`
+          HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t html`
+          HTML_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
           
-          echo $HTM_TITLE
-          echo MARKDOWN_TITLE
+          echo $HTML_TITLE >> $GITHUB_STEP_SUMMARY
+          echo $HTML_CONTENTS >> $GITHUB_STEP_SUMMARY
           
           JSON="{
             \"title\": \"$HTML_TITLE\",
@@ -64,7 +64,3 @@ jobs:
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
-
-      - if: github.event.inputs.publish_medium != 'true'
-        run: |
-          echo '## Published to Medium: NO!  >> $GITHUB_STEP_SUMMARY
