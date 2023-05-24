@@ -1,4 +1,4 @@
-name: 'Publish an article'
+name: 'Publish a new article'
 run-name: ${{ github.actor }} is publishing an article
 on:
   workflow_dispatch:
@@ -25,8 +25,9 @@ jobs:
       - name: Prepare markdown
         run: |
           echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          MARKDOWN_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md`
-          MARKDOWN_TITLE=`head -1 ${{ github.event.inputs.article_name }}`
+          echo $ARTICLE_NAME
+          MARKDOWN_CONTENTS=`cat $ARTICLE_NAME automated.md`
+          MARKDOWN_TITLE=`head -1 $ARTICLE_NAME`
           echo ARTICLE_NAME=${MARKDOWN_TITLE} >> $GITHUB_ENV
           echo MARKDOWN_CONTENTS=${MARKDOWN_CONTENTS} > $GITHUB_ENV
 
@@ -39,10 +40,6 @@ jobs:
             HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
             echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
             echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
-
-      #- uses: docker://pandoc/core:2.9
-      #  with:
-      #    args: ${{ steps.prepare_markdown.outputs.markdown }} --output=/home/runner/work/readings/readings/output/article.html
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
