@@ -6,14 +6,17 @@ on:
       article_name:
         description: "Article to publish"
         required: true
+        default: "programmers-brain.md"
       publish_medium:
         description: "Publish to Medium?"
         required: true
-        default: "false"
+        default: "true"
 
 jobs:
+
   publishing-a-new-article:
     runs-on: ubuntu-latest
+
     steps:
 
       - name: Checkout Repo
@@ -23,22 +26,29 @@ jobs:
         id: prepare_markdown
         run: |
           echo ARTICLE_NAME=${{ github.event.inputs.article_name }} >> $GITHUB_ENV
-          mkdir output
-          cat $ARTICLE_NAME automated.md > output/article.md
-          chmod -R 777 output 
+          mkdir /home/runner/work/readings/readings/output
+          cat $ARTICLE_NAME automated.md > /home/runner/work/readings/readings/output/article.md
+          chmod -R 777 /home/runner/work/readings/readings/output 
           echo "markdown=output/article.md" > $GITHUB_OUTPUT
 
       - uses: docker://pandoc/core:2.9
+        id: convert
         name: Converting article markdown to HTML
         with:
-          args: ${{ steps.prepare_markdown.outputs.markdown }} --output=output/article.html
+          args: --input=/home/runner/work/readings/readings/output/article.md --output=/home/runner/work/readings/readings/output/article.html
+
+      #- uses: actions/upload-artifact@v3
+      #  name: Uploading HTML artifacts
+      #  with:
+      #    name: output
+      #    path: output
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
           
-          HTML_TITLE=`head -1 output/article.html`
-          HTML_CONTENTS=`cat output/article.html`
+          HTML_TITLE=`head -1 /home/runner/work/readings/readings/output/article.html`
+          HTML_CONTENTS=`cat /home/runner/work/readings/readings/output/article.html`
           
           echo "The article to be published on Medium is: $ARTICLE_NAME"
           echo "The article title is: $HTML_TITLE"
