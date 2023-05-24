@@ -34,11 +34,11 @@ jobs:
         name: Convert to HTML
         with:
           pandoc-version: '2.9'
-        run: |
-            HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
-            HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
-            echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
-            echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
+          run: |
+              HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
+              HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
+              echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
+              echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
 
       #- uses: docker://pandoc/core:2.9
       #  with:
