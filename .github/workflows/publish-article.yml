@@ -32,8 +32,11 @@ jobs:
         run: |
           echo '## Published to Medium: ✓  >> $GITHUB_STEP_SUMMARY
 
-          HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t html`
-          HTML_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
+          # HTML_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t html`
+          # HTML_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
+          
+          HTML_TITLE=`head -1 automated.md | pandoc -t html`
+          HTML_CONTENTS=`head -1 automated.md | pandoc -t html`
           
           JSON="{
             \"title\": \"$HTML_TITLE\",
@@ -43,7 +46,7 @@ jobs:
             \"notifyFollowers\": false
           }"
 
-          POST_URL=https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts
+          POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL 
 
         env:
