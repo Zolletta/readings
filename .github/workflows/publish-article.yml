@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       article_name:
-        description: 'Article to publish'
+        description: "Article to publish"
         required: true
       publish_medium:
-        description: 'Publish to Medium?'
+        description: "Publish to Medium?"
         required: true
-        default: false
+        default: "false"
+
 jobs:
   publish-to-medium:
     runs-on: ubuntu-latest
@@ -18,20 +19,24 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Extract markdown
+      - name: Prepare markdown
         run: |
-          ARTICLE_NAME=${{ github.event.inputs.article_name }}
-          echo TITLE=`head -1 $ARTICLE_NAME` >> $GITHUB_ENV
-          echo MARKDOWN=`cat $ARTICLE_NAME automated.md` >> $GITHUB_ENV
+          echo ARTICLE_NAME=${{ github.event.inputs.article_name }}  >> $GITHUB_ENV
+          mkdir pandoc  
+          cat $ARTICLE_NAME automated.md > pandoc/article.md
 
-      - name: Converting article markdown to HTML
-        uses: lifepal/markdown-to-html@v1.1
+      - uses: docker://pandoc/core:2.9
+        name: Converting article markdown to HTML
         with:
-          text: ${{ env.MEDIUM_USER_ID }}
+          args: --output=pandoc/article.html pandoc/article.md
 
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
+          
+          HTML_TITLE=`head -1 pandoc/article.html`
+          HTML_CONTENTS=`cat pandoc/article.html`
+
           JSON="{
             \"title\": \"${HTML_TITLE}\",
             \"content\": \"${HTML_CONTENTS}\",
@@ -41,7 +46,7 @@ jobs:
           }"
 
           POST_URL=https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts
-          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL -vvv
+          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL -v 
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
