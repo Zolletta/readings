@@ -29,17 +29,11 @@ jobs:
 
       - name: Prepare markdown
         run: |
+          echo '# Publishing ${{ github.event.inputs.article_name }} 🚀' >> $GITHUB_STEP_SUMMARY
           MARKDOWN_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md`
           MARKDOWN_TITLE=`head -1 ${{ github.event.inputs.article_name }}`
           echo MARKDOWN_TITLE=${MARKDOWN_TITLE} >> $GITHUB_ENV
           echo MARKDOWN_CONTENTS=${MARKDOWN_CONTENTS} > $GITHUB_ENV
-
-      - name: Convert to HTML
-        run: |
-            HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
-            HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
-            echo HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html` > $GITHUB_ENV
-            echo HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html` > $GITHUB_ENV
 
       #- uses: docker://pandoc/core:2.9
       #  with:
@@ -48,10 +42,11 @@ jobs:
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
-          
-          echo "The article to be published on Medium is: ${{ github.event.inputs.article_name }}"
-          echo "The article title is: $HTML_TITLE"
+          echo '## Published to Medium: YES!  >> $GITHUB_STEP_SUMMARY
 
+          HTML_TITLE=`echo $MARKDOWN_TITLE | pandoc -t html`
+          HTML_CONTENTS=`echo $MARKDOWN_CONTENTS | pandoc -t html`
+          
           JSON="{
             \"title\": \"$HTML_TITLE\",
             \"content\": \"$HTML_CONTENTS\",
@@ -66,3 +61,7 @@ jobs:
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
+
+      - if: github.event.inputs.publish_medium != 'true'
+        run: |
+          echo '## Published to Medium: NO!  >> $GITHUB_STEP_SUMMARY
