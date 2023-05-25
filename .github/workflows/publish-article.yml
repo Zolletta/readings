@@ -30,23 +30,20 @@ jobs:
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
-          echo "## Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
+          echo "## $ARTICLE_TITLE - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
           
           JSON=$( jq -n \
-                  --arg title "ARTICLE_TITLE" \
-                  --arg content "ARTICLE_CONTENTS" \
+                  --arg title "${ARTICLE_TITLE}" \
+                  --arg content "${ARTICLE_CONTENTS}" \
                   --arg format "html" \
                   --arg canonical "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
                   --arg publish "public" \
-                  --arg notify false \
+                  --arg notify true \
                   '{title: $title, content: $content, contentFormat: $format, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
           
-          echo "#### Title: $ARTICLE_TITLE" >> $GITHUB_STEP_SUMMARY
-          echo $JSON >> $GITHUB_STEP_SUMMARY
-
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL 
 
