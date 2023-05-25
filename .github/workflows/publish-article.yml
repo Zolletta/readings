@@ -30,11 +30,12 @@ jobs:
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
-          echo "## $ARTICLE_TITLE - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`  
           
+          echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
+
           JSON=$( jq -n \
                   --arg title "${ARTICLE_TITLE}" \
                   --arg content "${ARTICLE_CONTENTS}" \
