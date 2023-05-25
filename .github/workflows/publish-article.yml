@@ -6,11 +6,10 @@ on:
       article_name:
         description: "Article to publish"
         required: true
-        default: "programmers-brain.md"
       publish_medium:
         description: "Publish to Medium?"
         required: true
-        default: "true"
+        default: "false"
 
 jobs:
 
