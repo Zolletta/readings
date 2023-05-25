@@ -38,10 +38,11 @@ jobs:
           JSON=$( jq -n \
                   --arg title "ARTICLE_TITLE" \
                   --arg content "ARTICLE_CONTENTS" \
+                  --arg format "html" \
                   --arg canonical "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
                   --arg publish "public" \
                   --arg notify false \
-                  '{title: $title, content: $content, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
+                  '{title: $title, content: $content, contentFormat: $format, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
           
           echo "#### Title: $ARTICLE_TITLE" >> $GITHUB_STEP_SUMMARY
           echo $JSON >> $GITHUB_STEP_SUMMARY
