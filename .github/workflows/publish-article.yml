@@ -34,14 +34,14 @@ jobs:
           
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
-                              
-          JSON="{
-            \"title\": \"${ARTICLE_TITLE}\",
-            \"content\": \"${ARTICLE_CONTENTS}\",  
-            \"canonicalUrl\": \"https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}\",
-            \"publishStatus\": \"public\",
-            \"notifyFollowers\": false
-          }"
+          
+          JSON=$( jq -n \
+                  --arg title "ARTICLE_TITLE" \
+                  --arg content "ARTICLE_CONTENTS" \
+                  --arg canonical "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
+                  --arg publish "public" \
+                  --arg notify false \
+                  '{title: $title, content: $content, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
           
           echo "#### Title: $ARTICLE_TITLE" >> $GITHUB_STEP_SUMMARY
           echo $JSON >> $GITHUB_STEP_SUMMARY
