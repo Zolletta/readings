@@ -64,38 +64,6 @@ jobs:
         run: |
 
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
-        # ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`
-          
-          echo SON=$( jq -n \
-                  --arg author "${LINKEDIN_AUTHOR}" \
-                  --arg commentary "${ARTICLE_TITLE}" \
-                  --arg visibility "CONTAINER" \ 
-                  --arg feedDistribution "MAIN_FEED" \
-                  --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
-                  --arg title "${ARTICLE_TITLE}" \
-                  --arg description "${ARTICLE_CONTENTS}" \
-                  --arg lifecycleState "DRAFT" \
-                  --arg isReshareDisabledByAuthor false \
-                  '{
-                    author: $author, 
-                    commentary: $commentary, 
-                    visibility: $visibility,
-                    distribution: {
-                      feedDistribution: $feedDistribution,
-                      targetEntities: [ ],
-                      thirdPartyDistributionChannels: [ ]
-                    },
-                    content: {
-                      article: {
-                        source: $source,
-                        title: $title,
-                        description: $description,
-                      }
-                    },
-                    lifecycleState: $lifecycleState,
-                    isReshareDisabledByAuthor: $isReshareDisabledByAuthor
-                  }' )
-          
 
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
           
