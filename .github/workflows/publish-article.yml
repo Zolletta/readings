@@ -114,3 +114,8 @@ jobs:
           
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
           echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+
+        env:
+          LINKEDIN_AUTHOR: ${{ env.LINKEDIN_AUTHOR }}
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+          LINKEDIN_API_VERSION: ${{ env.LINKEDIN_API_VERSION }}
