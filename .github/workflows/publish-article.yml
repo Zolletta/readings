@@ -59,7 +59,7 @@ jobs:
           #else
           #  echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
           #  echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
-          f#i
+          #ffi
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
