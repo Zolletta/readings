@@ -52,7 +52,7 @@ jobs:
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
           
-          STATUS_CODE=`echo $RESPONSE | grep HTTP"
+          STATUS_CODE=`echo $RESPONSE | grep HTTP`
           echo "${STATUS_CODE}" >> $GITHUB_STEP_SUMMARY
 
           #if [[ ${RESPONSE:-:3} -eq '201' ]] 
