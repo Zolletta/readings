@@ -62,7 +62,6 @@ jobs:
         name: Publish to Linkedin
         run: |
 
-
       # Linkedin
       - if: github.event.inputs.publish_linkedin == 'true'
         name: Publish to Linkedin
@@ -101,10 +100,9 @@ jobs:
                        isReshareDisabledByAuthor: $isReshareDisabledByAuthor
                 }' )
 
-          echo "${JSON}" >> $GITHUB_STEP_SUMMARY
-          
-          echo $(pwd) >> $GITHUB_STEP_SUMMARY
-          echo $(ls) >> $GITHUB_STEP_SUMMARY
+          echo "LINKEDIN_AUTHOR ${LINKEDIN_AUTHOR}" >> $GITHUB_STEP_SUMMARY
+          echo "LINKEDIN_API_VERSION ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
+ 
 
       #  RESPONSE_HEADER=`echo $RESPONSE | head -1`
       # echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
@@ -112,3 +110,5 @@ jobs:
 
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR: env.LINKEDIN_AUTHOR
+          LINKEDIN_API_VERSION: env.LINKEDIN_API_VERSION
