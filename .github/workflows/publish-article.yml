@@ -36,12 +36,12 @@ jobs:
       - name: Converting contents
         run: |
           
-          TMP_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t plain`
           TMP_CONTENTS_HTML=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`
           TMP_CONTENTS_PLAIN=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`
-          echo "ARTICLE_TITLE='$TMP_TITLE'" >> $GITHUB_ENV 
-          echo "ARTICLE_CONTENTS_HTML='$TMP_CONTENTS_HTML'" >> $GITHUB_ENV             
-          echo "ARTICLE_CONTENTS_PLAIN='$TMP_CONTENTS_PLAIN'" >> $GITHUB_ENV 
+          echo "ARTICLE_TITLE='`head -1 ${{ github.event.inputs.article_name }} | pandoc -t plain'"  
+          echo "ARTICLE_TITLE='`head -1 ${{ github.event.inputs.article_name }} | pandoc -t plain'" >> $GITHUB_ENV
+#          echo "ARTICLE_CONTENTS_HTML='$TMP_CONTENTS_HTML'" >> $GITHUB_ENV
+#          echo "ARTICLE_CONTENTS_PLAIN='$TMP_CONTENTS_PLAIN'" >> $GITHUB_ENV
           echo "abbr=$(date '+tuesday%y%m%d')" >> $GITHUB_ENV
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
