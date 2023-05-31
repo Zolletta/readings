@@ -53,17 +53,14 @@ jobs:
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
           
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          STATUS_CODE=${RESPONSE_HEADER: -3}
-          echo "Status code: $STATUS_CODE" >> $GITHUB_STEP_SUMMARY
-          echo "Status code: $RESPONSE_HEADER" >> $GITHUB_STEP_SUMMARY
 
-          #if [[ ${RESPONSE:-:3} -eq '201' ]] 
-          #then
+          if [[ ${RESPONSE_HEADER:-:3} -eq 'HTTP/2 201' ]] 
+          then
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
-          #else
-          #  echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
-          #  echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
-          #ffi
+          else
+            echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
+            echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+          fi
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
