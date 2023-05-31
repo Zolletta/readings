@@ -53,7 +53,8 @@ jobs:
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL` 
           
-          if [ ${RESPONSE:09:3} == '201' ] then
+          if [[ ${RESPONSE:09:3} == '201' ]] 
+          then
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           else
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
