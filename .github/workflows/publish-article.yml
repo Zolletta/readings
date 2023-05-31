@@ -54,7 +54,7 @@ jobs:
           
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
 
-          if [[ ${RESPONSE_HEADER:-:3} -eq 'HTTP/2 201' ]] 
+          if [[ ${RESPONSE_HEADER} -eq 'HTTP/2 201' ]] 
           then
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           else
