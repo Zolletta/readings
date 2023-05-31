@@ -32,6 +32,13 @@ jobs:
         with:
           pandoc-version: '2.9'
 
+      # Converting contents
+      - name: Converting contents
+        run: |
+          echo "ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain`" >> $GITHUB_ENV 
+          echo "ARTICLE_CONTENTS_HTML=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html` >> $GITHUB_ENV             
+          echo "ARTICLE_CONTENTS_PLAIN=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain` >> $GITHUB_ENV 
+
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
@@ -63,15 +70,11 @@ jobs:
         name: Publish to Linkedin
         run: |
           
-          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | plain -t html`  
-          
-          echo "## ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
           
           JSON=$( jq -n \
                   --arg author "${LINKEDIN_AUTHOR}" \
                   --arg commentary "${ARTICLE_TITLE}" \
-                  --arg content "${ARTICLE_CONTENTS}" \
+                  --arg content "${ARTICLE_CONTENTS_PLAIN}" \
                   --arg visibility "CONTAINER" \ 
                   --arg feedDistribution "MAIN_FEED" \
                   --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
@@ -107,8 +110,10 @@ jobs:
                       -X POST https://api.linkedin.com/rest/posts` 
           
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
+          
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
           echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+          echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
 
         env:
           LINKEDIN_AUTHOR: ${{ env.LINKEDIN_AUTHOR }}
