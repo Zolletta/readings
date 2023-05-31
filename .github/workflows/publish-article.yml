@@ -73,7 +73,6 @@ jobs:
                    --arg feedDistribution "MAIN_FEED" \
                    --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
                    --arg title "${ARTICLE_TITLE}" \
-                   --arg description "${ARTICLE_TITLE}" \
                    --arg lifecycleState "DRAFT" \
                   '{
                        author: $author,
@@ -87,8 +86,7 @@ jobs:
                        content: {
                          article: {
                            source: $source,
-                           title: $title,
-                           description: $description,
+                           title: $title
                          }
                        },
                        lifecycleState: $lifecycleState
