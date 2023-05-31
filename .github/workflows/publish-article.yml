@@ -11,7 +11,7 @@ on:
       publish_medium:
         description: "Publish to Medium?"
         required: true
-        default: "false"
+        default: "true"
       publish_linkedin:
         description: "Publish to Linkedin?"
         required: true
@@ -33,7 +33,7 @@ jobs:
           pandoc-version: '2.9'
 
       # Medium
-      - if: github.event.inputs.publish_medium == 'true'
+      - if: github.event.inputs.publish_medium == "true"
         name: Publish to Medium
         run: |
           
@@ -66,7 +66,7 @@ jobs:
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
        # Linkedin Access Token
-      - if: github.event.inputs.publish_linkedin == 'true'
+      - if: github.event.inputs.publish_linkedin == 'skip'
         name: Get Linkedin Access Token
         run: |
 
@@ -84,7 +84,9 @@ jobs:
 
 
         # Linkedin
-      - if: github.event.inputs.publish_facebook == 'true'
+
+      # Linkein
+      - if: github.event.inputs.publish_facebook == "true"
         name: Publish to Linkedin
         run: |
           
@@ -129,6 +131,10 @@ jobs:
                       -H "LinkedIn-Version: ${LINKEDIN_API_VERSION}" \
                       -H "Authorization: Bearer ${$LINKEDIN_ACCESS_TOKEN}" \
                       -X POST https://api.linkedin.com/rest/posts` 
+          
+         echo "${JSON}" >> $GITHUB_STEP_SUMMARY
+         echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+          
           
           if [ ${RESPONSE:09:3} == '201' ] then
             echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✓" >> $GITHUB_STEP_SUMMARY
