@@ -75,7 +75,6 @@ jobs:
                    --arg title "${ARTICLE_TITLE}" \
                    --arg description "${ARTICLE_CONTENTS}" \
                    --arg lifecycleState "DRAFT" \
-                   --arg isReshareDisabledByAuthor 0 \
                   '{
                        author: $author,
                        commentary: $commentary,
@@ -92,8 +91,7 @@ jobs:
                            description: $description,
                          }
                        },
-                       lifecycleState: $lifecycleState,
-                       isReshareDisabledByAuthor: $isReshareDisabledByAuthor
+                       lifecycleState: $lifecycleState
                 }' )
           
           POST_URL="https://api.linkedin.com/rest/posts"
