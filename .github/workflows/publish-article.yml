@@ -99,8 +99,8 @@ jobs:
 
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
           
-          pwd >> $GITHUB_STEP_SUMMARY
-          ls >> $GITHUB_STEP_SUMMARY
+          echo pwd >> $GITHUB_STEP_SUMMARY
+          echo ls >> $GITHUB_STEP_SUMMARY
 
         #  RESPONSE_HEADER=`echo $RESPONSE | head -1`
         # echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
