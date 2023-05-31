@@ -97,7 +97,7 @@ jobs:
                     isReshareDisabledByAuthor: $isReshareDisabledByAuthor
                   }' )
           
-          RESPONSE=`curl -i -d "$JSON" \
+         # RESPONSE=`curl -i -d "$JSON" \
                       -H "Content-Type: application/json" \
                       -H "X-Restli-Protocol-Version: 2.0.0" \
                       -H "LinkedIn-Version: ${LINKEDIN_API_VERSION}" \
@@ -107,8 +107,8 @@ jobs:
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
           
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
-          echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
+        # echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+        #  echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
 
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
