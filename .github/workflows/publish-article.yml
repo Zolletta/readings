@@ -32,14 +32,6 @@ jobs:
         with:
           pandoc-version: '2.9'
 
-      # Converting contents
-      - name: Converting contents
-        run: |
-
-          echo "ARTICLE_TITLE=$(head -1 ${{ github.event.inputs.article_name }} | pandoc -t plain)" >> $GITHUB_ENV
-          echo "ARTICLE_CONTENTS_HTML=$(cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html)" >> $GITHUB_ENV
-          echo "ARTICLE_CONTENTS_PLAIN=$(cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain)" >> $GITHUB_ENV
-
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
@@ -70,12 +62,14 @@ jobs:
       - if: github.event.inputs.publish_linkedin == 'true'
         name: Publish to Linkedin
         run: |
-          
+
+          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
           
           JSON=$( jq -n \
                   --arg author "${LINKEDIN_AUTHOR}" \
                   --arg commentary "${ARTICLE_TITLE}" \
-                  --arg content "${ARTICLE_CONTENTS_PLAIN}" \
+                  --arg content "${ARTICLE_CONTENTS}" \
                   --arg visibility "CONTAINER" \ 
                   --arg feedDistribution "MAIN_FEED" \
                   --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
