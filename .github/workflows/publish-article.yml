@@ -51,16 +51,8 @@ jobs:
            
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
-          
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-
-          if [[ ${RESPONSE_HEADER} -eq 'HTTP/2 201' ]] 
-          then
-            echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
-            echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "## ${ARTICLE_TITLE} - Publication to Medium: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
