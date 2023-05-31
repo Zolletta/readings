@@ -23,12 +23,9 @@ Versions you'll find here are the most updated.
 
 ## Automated publishing integration
 
+### Summary
+
 - Medium (as long as the deprecated API stay active): ✓
 - Twitter: waiting for API access ✗
 - Facebook: work in progress ✗
-- Linkedin: on the bucket List ✗
-- 
-
-
-
-
+- LinkedIn: on the bucket List ✗
