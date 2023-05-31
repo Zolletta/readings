@@ -116,6 +116,4 @@ jobs:
           echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
 
         env:
-          LINKEDIN_AUTHOR: ${{ env.LINKEDIN_AUTHOR }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
-          LINKEDIN_API_VERSION: ${{ env.LINKEDIN_API_VERSION }}
