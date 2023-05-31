@@ -59,7 +59,7 @@ jobs:
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           else
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
-            echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+            echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
           fi
 
         env:
