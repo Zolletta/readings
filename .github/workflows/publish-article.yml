@@ -58,10 +58,6 @@ jobs:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
-      - if: github.event.inputs.publish_linkedin == 'hide'
-        name: Publish to Linkedin
-        run: |
-
       # Linkedin
       - if: github.event.inputs.publish_linkedin == 'true'
         name: Publish to Linkedin
