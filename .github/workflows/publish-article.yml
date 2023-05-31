@@ -50,10 +50,12 @@ jobs:
                   '{title: $title, content: $content, contentFormat: $format, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
            
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
-          RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL` 
-                      echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+          RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
+          
+          STATUS_CODE=`echo $RESPONSE | grep HTTP"
+          echo "${STATUS_CODE}" >> $GITHUB_STEP_SUMMARY
 
-          #if [[ ${RESPONSE:09:3} -eq '201' ]] 
+          #if [[ ${RESPONSE:-:3} -eq '201' ]] 
           #then
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           #else
@@ -66,7 +68,7 @@ jobs:
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
       # Linkedin
-      - if: github.event.inputs.publish_facebook == 'true'
+      - if: github.event.inputs.publish_linkedin == 'skip'
         name: Publish to Linkedin
         run: |
           
