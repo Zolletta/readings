@@ -99,14 +99,18 @@ jobs:
                        lifecycleState: $lifecycleState,
                        isReshareDisabledByAuthor: $isReshareDisabledByAuthor
                 }' )
-
-          echo "LINKEDIN_AUTHOR ${LINKEDIN_AUTHOR}" >> $GITHUB_STEP_SUMMARY
-          echo "LINKEDIN_API_VERSION ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
+          
+          RESPONSE=`curl -i -d "$JSON" \
+                      -H "Content-Type: application/json" \
+                      -H "X-Restli-Protocol-Version: 2.0.0" \
+                      -H "LinkedIn-Version: ${LINKEDIN_API_VERSION}" \
+                      -H "Authorization: Bearer ${$LINKEDIN_ACCESS_TOKEN}" \
+                      -X POST https://api.linkedin.com/rest/posts` 
  
-
-      #  RESPONSE_HEADER=`echo $RESPONSE | head -1`
-      # echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
-      #  echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
+         RESPONSE_HEADER=`echo $RESPONSE | head -1`
+         echo "## ${ARTICLE_TITLE} - Publication to Linkedin (Api version ${LINKEDIN_API_VERSION}: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+          
+         $cho $RESPONSE >> $GITHUB_STEP_SUMMARY  
 
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
