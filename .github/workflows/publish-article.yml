@@ -97,7 +97,9 @@ jobs:
                 }' )
           
           POST_URL="https://api.linkedin.com/rest/posts"
-
+          RESPONSE_HEADER="dummy"
+          
+          echo "## ${ARTICLE_TITLE} - Publication to Linkedin Api version ${LINKEDIN_API_VERSION}: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
           
 
         env:
