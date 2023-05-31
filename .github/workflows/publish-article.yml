@@ -75,7 +75,7 @@ jobs:
                    --arg title "${ARTICLE_TITLE}" \
                    --arg description "${ARTICLE_CONTENTS}" \
                    --arg lifecycleState "DRAFT" \
-                   --arg isReshareDisabledByAuthor false \
+                   --arg isReshareDisabledByAuthor 0 \
                   '{
                        author: $author,
                        commentary: $commentary,
