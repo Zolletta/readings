@@ -68,12 +68,12 @@ jobs:
 
           JSON=$( jq -n \
                    --arg author "${LINKEDIN_AUTHOR}" \
-                   --arg commentary "${ARTICLE_TITLE}" \
+                   --arg commentary "${ARTICLE_CONTENTS}" \
                    --arg visibility "CONTAINER" \
                    --arg feedDistribution "MAIN_FEED" \
                    --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
                    --arg title "${ARTICLE_TITLE}" \
-                   --arg description "${ARTICLE_CONTENTS}" \
+                   --arg description "${ARTICLE_TITLE}" \
                    --arg lifecycleState "DRAFT" \
                   '{
                        author: $author,
