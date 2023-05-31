@@ -11,7 +11,7 @@ on:
       publish_medium:
         description: "Publish to Medium?"
         required: true
-        default: "true"
+        default: "false"
       publish_linkedin:
         description: "Publish to Linkedin?"
         required: true
@@ -59,7 +59,7 @@ jobs:
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
       # Linkedin
-      - if: github.event.inputs.publish_linkedin == 'skip'
+      - if: github.event.inputs.publish_linkedin == 'true'
         name: Publish to Linkedin
         run: |
           
@@ -68,7 +68,7 @@ jobs:
           
           echo "## ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
           
-                    JSON=$( jq -n \
+          JSON=$( jq -n \
                   --arg author "${LINKEDIN_AUTHOR}" \
                   --arg commentary "${ARTICLE_TITLE}" \
                   --arg content "${ARTICLE_CONTENTS}" \
@@ -107,7 +107,8 @@ jobs:
                       -X POST https://api.linkedin.com/rest/posts` 
           
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
-          echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+          RESPONSE_HEADER=`echo $RESPONSE | head -1`
+          echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
 
         env:
           LINKEDIN_AUTHOR: ${{ env.LINKEDIN_AUTHOR }}
