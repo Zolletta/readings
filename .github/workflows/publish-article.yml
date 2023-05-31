@@ -54,7 +54,8 @@ jobs:
           
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
           STATUS_CODE=${RESPONSE_HEADER: -3}
-          echo "Status code: ${STATUS_CODE}" >> $GITHUB_STEP_SUMMARY
+          echo "Status code: $STATUS_CODE" >> $GITHUB_STEP_SUMMARY
+          echo "Status code: $RESPONSE_HEADER" >> $GITHUB_STEP_SUMMARY
 
           #if [[ ${RESPONSE:-:3} -eq '201' ]] 
           #then
