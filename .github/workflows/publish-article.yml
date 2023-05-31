@@ -35,9 +35,9 @@ jobs:
       # Converting contents
       - name: Converting contents
         run: |
-          echo "ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain`" >> $GITHUB_ENV 
-          echo "ARTICLE_CONTENTS_HTML=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html` >> $GITHUB_ENV             
-          echo "ARTICLE_CONTENTS_PLAIN=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain` >> $GITHUB_ENV 
+          echo "ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }} | pandoc -t plain`" >> $GITHUB_ENV 
+          # echo "ARTICLE_CONTENTS_HTML=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html` >> $GITHUB_ENV             
+          # echo "ARTICLE_CONTENTS_PLAIN=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain` >> $GITHUB_ENV 
 
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
