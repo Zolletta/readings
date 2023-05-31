@@ -1,6 +1,6 @@
 name: 'Publish a new article'
 
-run-name: ${{ github.actor }} is publishing an article
+run-name: Publishing...
 on:
   workflow_dispatch:
     inputs:
