@@ -21,4 +21,14 @@ Some articles are not new: they were previoulsy published in Medium / Dev.to / a
 
 Versions you'll find here are the most updated.
 
+## Automated publishing integration
+
+- Medium (as long as the deprecated API stay active): ✓
+- Twitter: waiting for API access ✗
+- Facebook: work in progress ✗
+- Linkedin: on the bucket List ✗
+- 
+
+
+
 

@@ -1,4 +1,5 @@
 name: 'Publish a new article'
+
 run-name: ${{ github.actor }} is publishing an article
 on:
   workflow_dispatch:
@@ -6,10 +7,15 @@ on:
       article_name:
         description: "Article to publish"
         required: true
+        default: "programmers-brain.md"
       publish_medium:
         description: "Publish to Medium?"
         required: true
         default: "false"
+      publish_linkedin:
+        description: "Publish to Linkedin?"
+        required: true
+        default: "true"
 
 jobs:
 
@@ -26,6 +32,7 @@ jobs:
         with:
           pandoc-version: '2.9'
 
+      # Medium
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
         run: |
@@ -33,7 +40,6 @@ jobs:
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`  
           
-          echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
 
           JSON=$( jq -n \
                   --arg title "${ARTICLE_TITLE}" \
@@ -43,10 +49,98 @@ jobs:
                   --arg publish "public" \
                   --arg notify true \
                   '{title: $title, content: $content, contentFormat: $format, canonicalUrl: $canonical, publishStatus: $publish, notifyFollowers: $notify}' )
-          
+           
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
-          curl -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL 
+          RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL` 
+          
+          if [ ${RESPONSE:09:3} == '201' ] then
+            echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ${ARTICLE_TITLE} - Published to Medium: ✗" >> $GITHUB_STEP_SUMMARY
+            echo "Medium response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+          fi
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
+
+       # Linkedin Access Token
+      - if: github.event.inputs.publish_linkedin == 'true'
+        name: Get Linkedin Access Token
+        run: |
+
+          LOGIN_URI="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${LINKEDIN_APP_CLIENT_ID}&scope=w_member_social&state=123456&redirect_uri=${LINKEDIN_APP_REDIRECT_URI}"
+
+          RESPONSE=`curl -X -i POST ${LOGIN_URI}  \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -d "username=${LINKEDIN_USERNAME}&password=${LINKEDIN_PASSWORD}"` 
+          
+          echo "## ${RESPONSE} --- tentativo di login a linkedin" >> $GITHUB_STEP_SUMMARY
+
+          if [ ${RESPONSE:09:3} == '200' ] then
+            echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✓" >> $GITHUB_STEP_SUMMARY
+          fi          
+
+
+        # Linkedin
+      - if: github.event.inputs.publish_facebook == 'true'
+        name: Publish to Linkedin
+        run: |
+          
+          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | plain -t html`  
+                echo "## ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
+
+          JSON=$( jq -n \
+                  --arg author "${LINKEDIN_AUTHOR}" \
+                  --arg commentary "${ARTICLE_TITLE}" \
+                  --arg content "${ARTICLE_CONTENTS}" \
+                  --arg visibility "PUBLIC" \
+                  --arg feedDistribution "MAIN_FEED" \
+                  --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
+                  --arg feedDistribution "MAIN_FEED" \
+                  --arg title "${ARTICLE_TITLE}" \
+                  --arg description "${ARTICLE_CONTENTS}}" \
+                  --arg isReshareDisabledByAuthor false \
+                  '{
+                    author: $author, 
+                    commentary: $commentary, 
+                    visibility: $visibility,
+                    distribution: {
+                      feedDistribution: $feedDistribution,
+                      targetEntities: [ ],
+                      thirdPartyDistributionChannels: [ ]
+                    },
+                    content: {
+                      article: {
+                        source: $source,
+                        title: $title,
+                        description: $description,
+                      }
+                    },
+                    lifecycleState: $lifecycleState,
+                    isReshareDisabledByAuthor: $isReshareDisabledByAuthor
+                  }' )
+          
+          RESPONSE=`curl -i -d "$JSON" \
+                      -H "Content-Type: application/json" \
+                      -H "X-Restli-Protocol-Version: 2.0.0" \
+                      -H "LinkedIn-Version: ${LINKEDIN_API_VERSION}" \
+                      -H "Authorization: Bearer ${$LINKEDIN_ACCESS_TOKEN}" \
+                      -X POST https://api.linkedin.com/rest/posts` 
+          
+          if [ ${RESPONSE:09:3} == '201' ] then
+            echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✓" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✗" >> $GITHUB_STEP_SUMMARY
+            echo "Linkedin response: ${RESPONSE}" >> $GITHUB_STEP_SUMMARY
+            echo "It may be that the access token is elapsed! You should follow these steps:
+            echo "1. in a terminal, type python3 -m http.server 3001
+            echo "2. go to https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=YOUR_CLIENT_ID&scope=w_member_social&state=123456&redirect_uri=http://localhost:3001
+            echo "3. got to https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&code=THE_CODE_YOU_GOT_FROM_POINT_2&redirect_uri=http://localhost:3001
+          fi
+
+        env:
+          LINKEDIN_AUTHOR: ${{ env.LINKEDIN_AUTHOR }}
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+          LINKEDIN_API_VERSION: ${{ env.LINKEDIN_API_VERSION }}
