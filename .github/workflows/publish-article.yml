@@ -95,7 +95,8 @@ jobs:
                        lifecycleState: $lifecycleState,
                        isReshareDisabledByAuthor: $isReshareDisabledByAuthor
                 }' )
-         
+          
+          POST_URL="https://api.linkedin.com/rest/posts"
 
           
 
