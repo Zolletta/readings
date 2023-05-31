@@ -39,7 +39,6 @@ jobs:
           
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`  
-          
 
           JSON=$( jq -n \
                   --arg title "${ARTICLE_TITLE}" \
@@ -53,7 +52,7 @@ jobs:
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL` 
           
-          if [[ ${RESPONSE:09:3} == '201' ]] 
+          if [[ ${RESPONSE:09:3} -eq '201' ]] 
           then
             echo "## ${ARTICLE_TITLE} - Published to Medium: ✓" >> $GITHUB_STEP_SUMMARY
           else
@@ -64,26 +63,6 @@ jobs:
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
-
-       # Linkedin Access Token
-      - if: github.event.inputs.publish_linkedin == 'skip'
-        name: Get Linkedin Access Token
-        run: |
-
-          LOGIN_URI="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${LINKEDIN_APP_CLIENT_ID}&scope=w_member_social&state=123456&redirect_uri=${LINKEDIN_APP_REDIRECT_URI}"
-
-          RESPONSE=`curl -X -i POST ${LOGIN_URI}  \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -d "username=${LINKEDIN_USERNAME}&password=${LINKEDIN_PASSWORD}"` 
-          
-          echo "## ${RESPONSE} --- tentativo di login a linkedin" >> $GITHUB_STEP_SUMMARY
-
-          if [ ${RESPONSE:09:3} == '200' ] then
-            echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✓" >> $GITHUB_STEP_SUMMARY
-          fi          
-
-
-        # Linkedin
 
       # Linkein
       - if: github.event.inputs.publish_facebook == "true"
@@ -136,7 +115,8 @@ jobs:
          echo "${RESPONSE}" >> $GITHUB_STEP_SUMMARY
           
           
-          if [ ${RESPONSE:09:3} == '201' ] then
+          if [[ ${RESPONSE:09:3} -eq '201' ]] 
+          then
             echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✓" >> $GITHUB_STEP_SUMMARY
           else
             echo "## ${ARTICLE_TITLE} - Published to Linkedin: ✗" >> $GITHUB_STEP_SUMMARY
