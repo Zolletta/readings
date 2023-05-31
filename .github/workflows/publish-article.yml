@@ -24,13 +24,13 @@ jobs:
 
     steps:
 
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
       - name: Setup Pandoc
         uses: nikeee/setup-pandoc@v1
         with:
           pandoc-version: '2.9'
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
@@ -64,7 +64,7 @@ jobs:
         run: |
 
           ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
+        # ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`
           
           echo SON=$( jq -n \
                   --arg author "${LINKEDIN_AUTHOR}" \
@@ -99,6 +99,9 @@ jobs:
 
           echo "${JSON}" >> $GITHUB_STEP_SUMMARY
           
+          pwd >> $GITHUB_STEP_SUMMARY
+          ls >> $GITHUB_STEP_SUMMARY
+
         #  RESPONSE_HEADER=`echo $RESPONSE | head -1`
         # echo "## ${ARTICLE_TITLE} - Publication to Linkedin: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
         #  echo "### ${LINKEDIN_API_VERSION}" >> $GITHUB_STEP_SUMMARY
