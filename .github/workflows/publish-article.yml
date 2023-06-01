@@ -12,11 +12,6 @@ on:
         description: "Publish to Medium?"
         required: true
         default: "false"
-      publish_linkedin:
-        description: "Publish to Linkedin?"
-        required: true
-        default: "true"
-
 jobs:
 
   publish-a-new-article:
@@ -58,47 +53,3 @@ jobs:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
-      # Linkedin
-      - if: github.event.inputs.publish_linkedin == 'true'
-        name: Publish to Linkedin
-        run: |
-
-          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`
-
-          JSON=$( jq -n \
-                   --arg author "${LINKEDIN_AUTHOR}" \
-                   --arg commentary "${ARTICLE_CONTENTS}" \
-                   --arg visibility "PUBLIC" \
-                   --arg feedDistribution "MAIN_FEED" \
-                   --arg source "https://github.com/Zolletta/readings/blob/main/${{ github.event.inputs.article_name }}" \
-                   --arg title "${ARTICLE_TITLE}" \
-                   --arg lifecycleState "DRAFT" \
-                  '{
-                       author: $author,
-                       commentary: $commentary,
-                       visibility: $visibility,
-                       distribution: {
-                         feedDistribution: $feedDistribution,
-                         targetEntities: [ ],
-                         thirdPartyDistributionChannels: [ ]
-                       },
-                       content: {
-                         article: {
-                           source: $source,
-                           title: $title
-                         }
-                       },
-                       lifecycleState: $lifecycleState
-                }' )
-          
-          POST_URL="https://api.linkedin.com/rest/posts"
-          RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "X-Restli-Protocol-Version: 2.0.0" -H "LinkedIn-Version: ${LINKEDIN_API_VERSION}" -H "Authorization: Bearer $LINKEDIN_ACCESS_TOKEN" -X POST $POST_URL`
-          RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          echo "## ${ARTICLE_TITLE} - Publication to Linkedin Api version ${LINKEDIN_API_VERSION}: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
-          
-
-        env:
-          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
-          LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
-          LINKEDIN_API_VERSION: ${{ vars.LINKEDIN_API_VERSION }}
