@@ -1,3 +1,2 @@
 
-###### This article was automatically published public available API and gitHub Actions (see 
-https://github.com/Zolletta/readings/tree/main/.github/workflows](https://github.com/Zolletta/readings/tree/main/.github/workflows)
+###### This article was automatically published leveraging public available API and GitHub Actions - see [this GitHub workflow](https://github.com/Zolletta/readings/blob/main/.github/workflows/publish-article.yml)
