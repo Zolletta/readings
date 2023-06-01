@@ -28,4 +28,4 @@ Versions you'll find here are the most updated.
 - Medium (as long as the deprecated API stay active): ✓
 - Twitter: waiting for API access ✗
 - Facebook: work in progress ✗
-- LinkedIn: on the bucket ListL  work in progress ✗
+- LinkedIn: ✗ - You have to be a company and to apply for their API to try to build something with their API :( )
