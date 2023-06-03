@@ -31,6 +31,13 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - name: Find title
+        run: |
+
+          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
+          echo "# ${ARTICLE_TITLE} " >> $GITHUB_STEP_SUMMARY
+          echo "## Summary of publishing attempts: " >> $GITHUB_STEP_SUMMARY
+
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
         name: Publish to Medium
@@ -51,7 +58,7 @@ jobs:
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          echo "## ${ARTICLE_TITLE} - Publication to Medium: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+          echo "### Medium: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
@@ -62,7 +69,6 @@ jobs:
         name: Publish to Facebook
         run: |
           
-          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
 
           JSON=$( jq -n \
@@ -73,7 +79,7 @@ jobs:
           POST_URL="https://graph.facebook.com/$FACEBOOK_PAGE_ID/feed"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          echo "## ${ARTICLE_TITLE} - Publication to Facebook: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+          echo "### Facebook: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
 
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
