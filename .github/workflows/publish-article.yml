@@ -69,7 +69,7 @@ jobs:
         name: Publish to Facebook
         run: |
           
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`  
 
           JSON=$( jq -n \
                   --arg message "${ARTICLE_CONTENTS}" \
