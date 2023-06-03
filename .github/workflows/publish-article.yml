@@ -7,7 +7,6 @@ on:
       article_name:
         description: "Article to publish"
         required: true
-        default: "programmers-brain.md"
       publish_medium:
         description: "Publish to Medium?"
         required: true
@@ -15,7 +14,7 @@ on:
       publish_facebook:
         description: "Publish to Facebook?"
         required: true
-        default: "true"
+        default: "false"
 jobs:
 
   publish-a-new-article:
@@ -69,7 +68,7 @@ jobs:
         name: Publish to Facebook
         run: |
           
-          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t html`  
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.txt | pandoc -t plain`  
 
           JSON=$( jq -n \
                   --arg message "${ARTICLE_CONTENTS}" \
