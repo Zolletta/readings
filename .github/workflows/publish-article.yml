@@ -62,6 +62,7 @@ jobs:
         name: Publish to Facebook
         run: |
           
+          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
           ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.md | pandoc -t plain`  
 
           JSON=$( jq -n \
