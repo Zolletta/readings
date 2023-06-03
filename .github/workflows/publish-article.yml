@@ -68,7 +68,7 @@ jobs:
           JSON=$( jq -n \
                   --arg message "${ARTICLE_CONTENTS}" \
                   --arg access_token "${FACEBOOK_PAGE_ACCESS_TOKEN}" \
-                  '{message: $title, access_token: $access_token}' )
+                  '{message: $message, access_token: $access_token}' )
           
           POST_URL="https://graph.facebook.com/$FACEBOOK_PAGE_ID/feed"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
