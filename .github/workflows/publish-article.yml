@@ -1,6 +1,6 @@
 name: 'Publish a new article'
 
-run-name: "Publishing... ${{ github.event.inputs.article_name }}"
+run-name: "Publishing ${{ github.event.inputs.article_name }}"
 on:
   workflow_dispatch:
     inputs:
