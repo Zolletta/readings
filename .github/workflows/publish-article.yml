@@ -7,9 +7,12 @@ on:
       article_name:
         description: "Article to publish"
         required: true
-        default: "programmers-brain.md"
       publish_medium:
         description: "Publish to Medium?"
+        required: true
+        default: "false"
+      publish_facebook:
+        description: "Publish to Facebook?"
         required: true
         default: "false"
 jobs:
@@ -26,6 +29,13 @@ jobs:
 
       - name: Checkout Repo
         uses: actions/checkout@v3
+
+      - name: Find title
+        run: |
+
+          ARTICLE_TITLE=`head -1 ${{ github.event.inputs.article_name }}| pandoc -t plain` 
+          echo "# ${ARTICLE_TITLE} " >> $GITHUB_STEP_SUMMARY
+          echo "## Summary of publishing attempts: " >> $GITHUB_STEP_SUMMARY
 
       # Medium
       - if: github.event.inputs.publish_medium == 'true'
@@ -47,9 +57,29 @@ jobs:
           POST_URL="https://api.medium.com/v1/users/$MEDIUM_USER_ID/posts"
           RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
           RESPONSE_HEADER=`echo $RESPONSE | head -1`
-          echo "## ${ARTICLE_TITLE} - Publication to Medium: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+          echo "### Medium: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
 
         env:
           MEDIUM_USER_ID: ${{ secrets.MEDIUM_USER_ID }}
           MEDIUM_SECRET: ${{ secrets.MEDIUM_SECRET }}
 
+      # Facebook
+      - if: github.event.inputs.publish_facebook == 'true'
+        name: Publish to Facebook
+        run: |
+          
+          ARTICLE_CONTENTS=`cat ${{ github.event.inputs.article_name }} automated.txt | pandoc -t plain`  
+
+          JSON=$( jq -n \
+                  --arg message "${ARTICLE_CONTENTS}" \
+                  --arg access_token "${FACEBOOK_PAGE_ACCESS_TOKEN}" \
+                  '{message: $message, access_token: $access_token}' )
+          
+          POST_URL="https://graph.facebook.com/$FACEBOOK_PAGE_ID/feed"
+          RESPONSE=`curl -i -d "$JSON" -H "Content-Type: application/json" -H "Authorization: Bearer $MEDIUM_SECRET" -X POST $POST_URL`
+          RESPONSE_HEADER=`echo $RESPONSE | head -1`
+          echo "### Facebook: ${RESPONSE_HEADER}" >> $GITHUB_STEP_SUMMARY
+
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ vars.FACEBOOK_PAGE_ID }}
