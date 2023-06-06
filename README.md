@@ -3,7 +3,7 @@
 
 I like reading a lot and sometimes I read technical books which I found very very interesting. 
 
-Since one of the best tools for me is the elaboration / summarization of comcepts found in the materials I study, I decided to write some articles.
+Since one of the best tools for me is the elaboration / summarization of concepts found in the materials I study, I decided to write some articles.
 
 My purpose was not to write a full comprehensive summary of the book, but to squeeze out the most interesting part (for me): If I want to come back to a particular thing I can still re-read it :)
 
