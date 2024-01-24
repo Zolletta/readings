@@ -3,7 +3,7 @@
 ## by Felienne Hermans, published by Manning
 
 I found [The programmer’s brain, by Felienne Hermans](https://www.manning.com/books/the-programmers-brain) very interesting. The only drawback, in my opinion, was the organization of contents: I would have rearranged in a different manner because in the way I read them I felt some low cohesion.
-Below I won’t cite too much researchers and professors, but keep in mind that the book has all the names and the bibliographic information needed!
+Below I won’t cite too many researchers and professors, but keep in mind that the book has all the names and the bibliographic information needed!
 
 ## Activities in programming
 
