@@ -4,7 +4,7 @@
 
 This project has been superseeded by [https://github.com/Zolletta/zolletta.org](https://github.com/Zolletta/zolletta.org). 
 
-All the contents has been moved there, and can be ready accessing [zolletta.org](https://zolletta.org)
+All the contents has been moved there, and can be read accessing [zolletta.org](https://zolletta.org)
 
 ## What this project was
 I like reading a lot and sometimes I read technical books which I found very very interesting. 
